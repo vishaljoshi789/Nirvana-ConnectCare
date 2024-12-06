@@ -11,6 +11,8 @@ from .serializers import (
     LogsSerializer,
     ConnectionSerializer
 )
+from rest_framework.permissions import AllowAny
+from django.contrib.auth.hashers import make_password
 
 class HospitalView(APIView):
     def get(self, request):
@@ -39,13 +41,18 @@ class WardView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserView(APIView):
+    permission_classes = [AllowAny]
     def get(self, request):
-        users = User.objects.all()
-        serializer = UserSerializer(users, many=True)
+        user = request.user
+        serializer = UserSerializer(user)
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
+        data = request.data
+        if "password" in data:
+            data["password"] = make_password(data["password"])
+
+        serializer = UserSerializer(data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)

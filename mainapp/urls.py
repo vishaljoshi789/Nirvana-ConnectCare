@@ -14,11 +14,11 @@ from .views import (
 )
 
 urlpatterns = [
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('hospitals/', HospitalView.as_view(), name='hospital'),
     path('wards/', WardView.as_view(), name='ward'),
-    path('users/', UserView.as_view(), name='user'),
+    path('user/', UserView.as_view(), name='user'),
     path('staffs/', StaffView.as_view(), name='staff'),
     path('patients/', PatientView.as_view(), name='patient'),
     path('logs/', LogsView.as_view(), name='logs'),

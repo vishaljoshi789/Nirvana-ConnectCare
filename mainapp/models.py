@@ -26,8 +26,8 @@ class Ward(models.Model):
 
 
 class User(AbstractUser):
+    name = models.CharField(max_length=100, null=True)
     username = models.CharField(max_length=100, unique=True)
-    password = models.CharField(max_length=100)
     email = models.EmailField(max_length=100, unique=True)
     phone = models.CharField(max_length=10)
     address = models.TextField()
@@ -37,6 +37,7 @@ class User(AbstractUser):
     country = models.CharField(max_length=100)
     aadhar = models.CharField(max_length=12, null=True)
     date_of_birth = models.DateField(null=True)
+    gender = models.CharField(max_length=20, null=True, choices=(('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')))
 
     def __str__(self):
         return self.username
