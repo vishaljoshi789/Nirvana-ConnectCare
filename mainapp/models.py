@@ -43,26 +43,24 @@ class User(AbstractUser):
         return self.username
     
 class Staff(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    email = models.EmailField(max_length=100)
-    phone = models.CharField(max_length=10)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='role')
     user_type = models.CharField(max_length=100, choices=[('Doctor', 'Doctor'), ('Nurse', 'Nurse'), ('HOD', 'HOD'), ('Principal', 'Principal'), ('Admin', 'Admin')])
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE)
-    ward = models.ForeignKey(Ward, on_delete=models.CASCADE)
-
+    ward = models.CharField(max_length=30)
     def __str__(self):
-        return self.name
+        return self.user.name
     
 class Patient(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     hospital = models.ForeignKey(Hospital, on_delete=models.CASCADE)
-    ward = models.ForeignKey(Ward, on_delete=models.CASCADE)
-    admit = models.DateTimeField()
-    discharge = models.DateTimeField()
+    staff = models.ForeignKey(Staff, on_delete=models.CASCADE, related_name='patient', null=True)
+    ward = models.CharField(max_length=100)
+    admit = models.DateTimeField(null=True)
+    discharge = models.DateTimeField(null=True)
     added_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name
+        return self.user.name
 
 class Logs(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)

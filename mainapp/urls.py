@@ -19,8 +19,8 @@ urlpatterns = [
     path('hospitals/', HospitalView.as_view(), name='hospital'),
     path('wards/', WardView.as_view(), name='ward'),
     path('user/', UserView.as_view(), name='user'),
-    path('staffs/', StaffView.as_view(), name='staff'),
-    path('patients/', PatientView.as_view(), name='patient'),
+    path('staff/', StaffView.as_view(), name='staff'),
+    path('patient/', PatientView.as_view(), name='patient'),
     path('logs/', LogsView.as_view(), name='logs'),
     path('connections/', ConnectionView.as_view(), name='connection'),
 ]

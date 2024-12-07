@@ -7,6 +7,7 @@ from .serializers import (
     WardSerializer,
     UserSerializer,
     StaffSerializer,
+    StaffUserSerializer,
     PatientSerializer,
     LogsSerializer,
     ConnectionSerializer
@@ -60,12 +61,15 @@ class UserView(APIView):
 
 class StaffView(APIView):
     def get(self, request):
-        staff = Staff.objects.all()
-        serializer = StaffSerializer(staff, many=True)
+        staff = Staff.objects.filter(ward=request.GET.get('ward')).filter(hospital=request.user.role.hospital)
+        serializer = StaffUserSerializer(staff, many=True)
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = StaffSerializer(data=request.data)
+        data = request.data
+        data['user'] = User.objects.get(username=data['user']).id
+        data['hospital'] = request.user.role.hospital.id
+        serializer = StaffSerializer(data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -78,7 +82,10 @@ class PatientView(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = PatientSerializer(data=request.data)
+        data = request.data
+        data['user'] = User.objects.get(username=data['user']).id
+        data['hospital'] = request.user.role.hospital.id
+        serializer = PatientSerializer(data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
