@@ -22,5 +22,5 @@ urlpatterns = [
     path('staff/', StaffView.as_view(), name='staff'),
     path('patient/', PatientView.as_view(), name='patient'),
     path('logs/', LogsView.as_view(), name='logs'),
-    path('connections/', ConnectionView.as_view(), name='connection'),
+    path('connection/', ConnectionView.as_view(), name='connection'),
 ]

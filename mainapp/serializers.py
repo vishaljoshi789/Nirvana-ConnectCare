@@ -47,3 +47,10 @@ class ConnectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Connection
         fields = '__all__'
+
+class ConnectionDetailedSerializer(serializers.ModelSerializer):
+    user1 = UserInfoSerializer()
+    user2 = UserInfoSerializer()
+    class Meta:
+        model = Connection
+        fields = '__all__'

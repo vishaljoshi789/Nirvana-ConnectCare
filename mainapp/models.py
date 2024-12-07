@@ -76,6 +76,9 @@ class Logs(models.Model):
 class Connection(models.Model):
     user1 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user1')
     user2 = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user2')
+    private = models.BooleanField(default=False)
+    SOS = models.BooleanField(default=True)
+    listed = models.BooleanField(default=True)
     added_on = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

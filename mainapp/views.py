@@ -11,6 +11,7 @@ from .serializers import (
     PatientSerializer,
     LogsSerializer,
     ConnectionSerializer,
+    ConnectionDetailedSerializer,
     UserInfoSerializer
 )
 from rest_framework.permissions import AllowAny
@@ -107,11 +108,14 @@ class LogsView(APIView):
 
 class ConnectionView(APIView):
     def get(self, request):
-        connections = Connection.objects.all()
-        serializer = ConnectionSerializer(connections, many=True)
+        connections = Connection.objects.filter(user1=request.user) | Connection.objects.filter(user2=request.user)
+        serializer = ConnectionDetailedSerializer(connections, many=True)
         return Response(serializer.data)
 
     def post(self, request):
+        data = request.data
+        data['user1'] = User.objects.get(username=data['username']).id
+        data['user2'] = request.user.id
         serializer = ConnectionSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()

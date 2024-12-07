@@ -3,7 +3,6 @@ from django.dispatch import receiver
 from .models import Logs, Connection, Patient
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
-import json
 
 @receiver(post_save, sender=Logs)
 def notify_connected_users(sender, instance, **kwargs):
@@ -35,7 +34,6 @@ def notify_connected_users(sender, instance, **kwargs):
 @receiver(post_save, sender=Patient)
 def notify_admission_discharge(sender, instance, created, **kwargs):
     channel_layer = get_channel_layer()
-
     if created:
         # Patient admitted for the first time
         event_type = "admitted"
