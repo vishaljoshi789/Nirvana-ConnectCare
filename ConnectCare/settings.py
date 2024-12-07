@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'corsheaders',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -86,8 +87,18 @@ TEMPLATES = [
     },
 ]
 
+ASGI_APPLICATION = 'ConnectCare.asgi.application'
+
 WSGI_APPLICATION = 'ConnectCare.wsgi.application'
 
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases

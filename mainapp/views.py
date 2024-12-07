@@ -10,7 +10,8 @@ from .serializers import (
     StaffUserSerializer,
     PatientSerializer,
     LogsSerializer,
-    ConnectionSerializer
+    ConnectionSerializer,
+    UserInfoSerializer
 )
 from rest_framework.permissions import AllowAny
 from django.contrib.auth.hashers import make_password
@@ -45,7 +46,7 @@ class UserView(APIView):
     permission_classes = [AllowAny]
     def get(self, request):
         user = request.user
-        serializer = UserSerializer(user)
+        serializer = UserInfoSerializer(user)
         return Response(serializer.data)
 
     def post(self, request):
